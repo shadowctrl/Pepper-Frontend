@@ -47,7 +47,8 @@ const exchangeToken = async (code: string): Promise<AxiosResponse> => {
       });
     });
   const accessToken = response.data.access_token;
-  await setCookie(accessToken);
+  const accessTokenExpiry = response.data.expires_in;
+  await setCookie(accessToken, accessTokenExpiry);
   await accessInfo(accessToken);
   return response;
 };
@@ -59,7 +60,6 @@ const login = () => {
       const codevalue = searchParams.get("code");
       if (codevalue) {
         const response: AxiosResponse = await exchangeToken(codevalue);
-        console.log(response);
       }
     })();
   }, []);
